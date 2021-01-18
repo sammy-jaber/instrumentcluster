@@ -1,6 +1,9 @@
 # Identifying register addresses on CAN bus-controlled instrument clusters
+
 This is particularly useful for DIY EV conversions where the engine ECU has been removed but still want to utilise the original instrument cluster.
+
 Firstly you need to identify the pin assignment for the instrument cluster you want to control because you have to know which pins are used for the CAN BUS data transfer.
+
 Then you'll need the syntax of sending the CAN Broadcast over the CAN Bus Shield/Adaptor (here's what I used):
 unsigned char stmp[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 CAN.sendMsgBuf(0x00, 0, 8, stmp);
