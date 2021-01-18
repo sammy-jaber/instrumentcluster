@@ -1,0 +1,39 @@
+#include <mcp_can.h>
+#include <SPI.h>
+
+/*SAMD core*/
+#ifdef ARDUINO_SAMD_VARIANT_COMPLIANCE
+#define SERIAL SerialUSB
+#else
+#define SERIAL Serial
+#endif
+
+const int SPI_CS_PIN = 9;
+MCP_CAN CAN(SPI_CS_PIN);                                    // Set CS pin
+
+void setup() {
+  SERIAL.begin(115200);
+
+  while (CAN_OK != CAN.begin(CAN_500KBPS)) {            // init can bus : baudrate = 500k
+    SERIAL.println("CAN BUS Shield init fail");
+    SERIAL.println(" Init CAN BUS Shield again");
+    delay(100);
+  }
+  SERIAL.println("CAN BUS Shield init ok!");
+}
+
+unsigned char stmp[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+
+void loop() {
+  for (int i = 0; i < 4096; i++) {
+    unsigned char stmp[8] = {255, 255, 255, 255, 255, 255, 255, 255};
+    CAN.sendMsgBuf( i, 0, 8, stmp);
+    SERIAL.println( i );                                 //Print out the actual register address
+    delay(20);                                           //wait to check if there happened something on the dash
+  }
+
+  CAN.sendMsgBuf(0x00, 0, 8, stmp);
+  delay(20);                                             // send data per 100ms
+}
+
+// END FILE
