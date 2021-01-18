@@ -7,6 +7,7 @@ Firstly you need to identify the pin assignment for the instrument cluster you w
 Then you'll need the syntax of sending the CAN Broadcast over the CAN Bus Shield/Adaptor (here's what I used):
 unsigned char stmp[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 CAN.sendMsgBuf(0x00, 0, 8, stmp);
+
 You will need to find the correct register addresses. This method uses ‘brute-force’ technique using a simple "for loop".
 Something like:
 for (int i = 0; i < 4096; i++) {
